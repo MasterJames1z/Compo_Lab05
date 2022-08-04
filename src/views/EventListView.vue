@@ -34,6 +34,8 @@
 import EventCard from '@/components/EventCard.vue'
 import EventService from '@/services/EventService.js'
 import { watchEffect } from '@vue/runtime-core'
+// import NProgress from 'nprogress'
+
 export default {
   name: 'EventListView',
   props: {
@@ -42,6 +44,39 @@ export default {
       required: true
     }
   },
+  beforeRouteEnter(routeTo, routeFrom, next) {
+    // NProgress.start()
+    EventService.getEvents(2, parseInt(routeTo.query.page) || 2)
+      .then((response) => {
+        next((comp) => {
+          comp.events = response.data
+          comp.totalEvents = response.headers['x-total-count']
+        })
+      })
+      .catch(() => {
+        next({ name: 'NetworkError' })
+      })
+    // .finally(() => {
+    //   NProgress.done()
+    // })
+  },
+  beforeRouteUpdate(routeTo, routeFrom, next) {
+    // NProgress.start()
+    EventService.getEvents(2, parseInt(routeTo.query.page) || 2)
+      .then((response) => {
+        next((comp) => {
+          comp.events = response.data
+          comp.totalEvents = response.headers['x-total-count']
+        })
+      })
+      .catch(() => {
+        next({ name: 'NetworkError' })
+      })
+    // .finally(() => {
+    //   NProgress.done()
+    // })
+  },
+
   components: {
     EventCard
   },
