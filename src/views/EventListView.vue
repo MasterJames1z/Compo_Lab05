@@ -46,7 +46,7 @@ export default {
   },
   beforeRouteEnter(routeTo, routeFrom, next) {
     // NProgress.start()
-    EventService.getEvents(2, parseInt(routeTo.query.page) || 2)
+    EventService.getEvents(3, parseInt(routeTo.query.page) || 1)
       .then((response) => {
         next((comp) => {
           comp.events = response.data
@@ -62,7 +62,7 @@ export default {
   },
   beforeRouteUpdate(routeTo, routeFrom, next) {
     // NProgress.start()
-    EventService.getEvents(2, parseInt(routeTo.query.page) || 2)
+    EventService.getEvents(3, parseInt(routeTo.query.page) || 1)
       .then((response) => {
         next((comp) => {
           comp.events = response.data
@@ -100,7 +100,7 @@ export default {
   },
   computed: {
     hasNextPage() {
-      let totalPages = Math.ceil(this.totalEvents / 2)
+      let totalPages = Math.ceil(this.totalEvents / 3)
       return this.page < totalPages
     }
   }
